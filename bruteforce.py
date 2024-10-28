@@ -14,7 +14,7 @@ def get_combinations(n: int) -> Generator:
         yield bin(i)[2:].zfill(n)
 
 
-def get_best_combination(combinations: Generator, data: list[(str, int, float)]) -> list[str]:
+def get_best_combination(combinations: Generator, data: list[tuple]) -> str:
     best_perf, best_combination = 0, ""
     for combination in combinations:
         perf, invest= 0, 0
@@ -26,10 +26,22 @@ def get_best_combination(combinations: Generator, data: list[(str, int, float)])
         if invest <= MAX_INVEST and perf > best_perf:
             best_perf = perf
             best_combination = combination
-    return [data[index][0] for index, buy in enumerate(best_combination) if buy == "1"]
+    return best_combination
+
+
+def display_results(data: list[tuple], best_combination: str) -> None:
+    total_cost, performance = 0, 0
+    for index, buy in enumerate(best_combination):
+        if buy == "1":
+            print(f"Buy {data[index][0]} - cost: {data[index][1]}, profit: {data[index][2]}")
+            total_cost += data[index][1]
+            performance += data[index][2]
+    print("-"*50)
+    print(f"Total cost: {total_cost}, profit: {round(performance, 2)}\n")
+
 
 if __name__ == "__main__":
     data = get_data(FILE)
     combinations = get_combinations(len(data))
     best_combination = get_best_combination(combinations, data)
-    print(best_combination)
+    display_results(data, best_combination)
