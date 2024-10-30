@@ -59,6 +59,5 @@ if __name__ == "__main__":
         tracemalloc.start()
         main()
         snapshot = tracemalloc.take_snapshot()
-        for stat in snapshot.statistics("filename", cumulative=True):
+        for stat in snapshot.statistics("filename"):
             print(stat)
-
