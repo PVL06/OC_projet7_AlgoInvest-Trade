@@ -48,16 +48,17 @@ def main():
 
 
 if __name__ == "__main__":
-    if len(sys.argv) == 1:
-        main()
-    elif sys.argv[1] == "time":
-        with cProfile.Profile() as profile:
+    if len(sys.argv) > 1:
+        if sys.argv[1] == "time":
+            with cProfile.Profile() as profile:
+                main()
+            result = pstats.Stats(profile).sort_stats(pstats.SortKey.TIME)
+            result.print_stats()
+        elif sys.argv[1] == "memory":
+            tracemalloc.start()
             main()
-        result = pstats.Stats(profile).sort_stats(pstats.SortKey.TIME)
-        result.print_stats()
-    elif sys.argv[1] == "memory":
-        tracemalloc.start()
+            snapshot = tracemalloc.take_snapshot()
+            for stat in snapshot.statistics("filename"):
+                print(stat)
+    else:
         main()
-        snapshot = tracemalloc.take_snapshot()
-        for stat in snapshot.statistics("filename"):
-            print(stat)
