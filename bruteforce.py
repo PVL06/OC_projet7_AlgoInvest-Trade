@@ -1,10 +1,6 @@
-import sys
-import cProfile
-import pstats
-import tracemalloc
 from typing import Generator
 
-from csv_reader import get_data
+from utils import get_data, time_exec
 
 FILE = "data/Liste_actions_P7.csv"
 MAX_INVEST = 500
@@ -40,6 +36,7 @@ def display_results(data: list[tuple], best_combination: str) -> None:
     print(f"Total cost: {total_cost}, profit: {round(performance, 2)}\n")
 
 
+@time_exec
 def main():
     data = get_data(FILE)
     combinations = get_combinations(len(data))
@@ -48,17 +45,4 @@ def main():
 
 
 if __name__ == "__main__":
-    if len(sys.argv) > 1:
-        if sys.argv[1] == "time":
-            with cProfile.Profile() as profile:
-                main()
-            result = pstats.Stats(profile).sort_stats(pstats.SortKey.TIME)
-            result.print_stats()
-        elif sys.argv[1] == "memory":
-            tracemalloc.start()
-            main()
-            snapshot = tracemalloc.take_snapshot()
-            for stat in snapshot.statistics("filename"):
-                print(stat)
-    else:
-        main()
+    main()
