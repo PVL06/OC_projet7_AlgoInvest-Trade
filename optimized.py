@@ -4,7 +4,7 @@ import math
 
 import numpy as np
 
-from utils import get_data, time_exec
+from utils import get_data, time_exec, user_selection
 
 
 def get_new_array(last_array: np.array, weight: float, value: float) -> np.array:
@@ -44,29 +44,19 @@ def display_best_share(data: list[tuple], best_shares: list[str]) -> None:
         if share[0] in best_shares:
             total_cost += share[1]
             performance += share[2]
-            print(f"Buy {share[0]} - cost: {share[1]}, profit: {share[2]}")
+            print(f"Buy {share[0]} - cost: {round(share[1], 2)}, profit: {round(share[2],2 )}")
     print("-"*50)
-    print(f"Total cost: {total_cost}, profit: {round(performance, 2)}\n")
+    print(f"Total cost: {round(total_cost, 2)}, profit: {round(performance, 2)}\n")
 
 
 @time_exec
-def main(file, max_invest):
+def main(file: str, max_invest: int) -> None:
     data = get_data(file)
     best_share = get_best_items(data, max_invest)
     display_best_share(data, best_share)
 
 
 if __name__ == "__main__":
-    csv_files = os.listdir("data/")
-    print("\nCsv file list: ")
-    for i, file in enumerate(csv_files):
-        print(f" {i} -> {file}")
-    choice = input("\nSelect csv file number: ")
-    invest = input("Enter investment (default=500): ")
-    print("\n")
-    try:
-        file = f"data/{csv_files[int(choice)]}"
-        max_invest = int(invest) if invest else 500
-        main(file, max_invest)
-    except:
-        print("Bad input !")    
+    file, max_invest = user_selection()
+    print(f"\n{'-'*50}")
+    main(file, max_invest)
