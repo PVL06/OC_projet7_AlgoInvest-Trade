@@ -1,17 +1,10 @@
+import os
 import copy
 import math
-import sys
-import cProfile
-import pstats
-import tracemalloc
 
 import numpy as np
 
-from csv_reader import get_data
-
-
-FILE = "data/Liste_actions_P7.csv"
-MAX_INVEST = 500
+from utils import get_data, time_exec
 
 
 def get_new_array(last_array: np.array, weight: float, value: float) -> np.array:
@@ -56,24 +49,24 @@ def display_best_share(data: list[tuple], best_shares: list[str]) -> None:
     print(f"Total cost: {total_cost}, profit: {round(performance, 2)}\n")
 
 
-def main():
-    data = get_data(FILE)
-    res = get_best_items(data, MAX_INVEST)
+@time_exec
+def main(file, max_invest):
+    data = get_data(file)
+    res = get_best_items(data, max_invest)
     display_best_share(data, res)
 
 
 if __name__ == "__main__":
-    if len(sys.argv) > 1:
-        if sys.argv[1] == "time":
-            with cProfile.Profile() as profile:
-                main()
-            result = pstats.Stats(profile).sort_stats(pstats.SortKey.TIME)
-            result.print_stats()
-        elif sys.argv[1] == "memory":
-            tracemalloc.start()
-            main()
-            snapshot = tracemalloc.take_snapshot()
-            for stat in snapshot.statistics("filename"):
-                print(stat)
-    else:
-        main()
+    csv_files = os.listdir("data/")
+    print("\nCsv file list: ")
+    for i, file in enumerate(csv_files):
+        print(f" {i} -> {file}")
+    choice = input("\nSelect csv file number: ")
+    invest = input("Enter investment (default=500): ")
+    print("\n")
+    try:
+        file = f"data/{csv_files[int(choice)]}"
+        max_invest = int(invest) if invest else 500
+        main(file, max_invest)
+    except:
+        print("Bad input !")    

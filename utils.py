@@ -15,9 +15,9 @@ def get_data(path_file: str) -> list[tuple]:
 
 
 def time_exec(func):
-    def wrapper():
+    def wrapper(*args, **kwargs):
         start = perf_counter()
-        func()
+        func(*args, **kwargs)
         time_counter = (perf_counter() - start)*1000
         print(f"Execution time: {round(time_counter, 2)} ms\n")
     return wrapper
