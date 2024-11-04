@@ -9,8 +9,8 @@ def get_data(path_file: str) -> list[tuple]:
         return [
             (line[0],
             float(line[1]),
-            round(float(line[2].replace("%", ""))/100 * float(line[1]), 2))
-            for line in reader if float(line[1]) > 0
+            float(line[2].replace("%", ""))/100 * float(line[1]))
+            for line in reader if float(line[1]) > 0 and float(line[2].replace("%", "")) > 0
         ]
 
 

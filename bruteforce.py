@@ -29,7 +29,7 @@ def display_results(data: list[tuple], best_combination: str) -> None:
     total_cost, performance = 0, 0
     for index, buy in enumerate(best_combination):
         if buy == "1":
-            print(f"Buy {data[index][0]} - cost: {data[index][1]}, profit: {data[index][2]}")
+            print(f"Buy {data[index][0]} - cost: {data[index][1]}, profit: {round(data[index][2], 2)}")
             total_cost += data[index][1]
             performance += data[index][2]
     print("-"*50)
