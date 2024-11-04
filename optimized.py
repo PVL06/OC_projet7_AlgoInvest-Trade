@@ -26,9 +26,9 @@ def get_best_items(data: list[tuple], max_weight: int) -> list[str]:
     best_share = []
     weight, index = 0, len(matrix)
     while weight < max_weight:
-        columns = matrix[:index, max_weight - math.ceil(weight)]
-        for i in reversed(range(len(columns))):
-            if columns[i] != columns[i-1]:
+        column = matrix[:index, max_weight - math.ceil(weight)]
+        for i in reversed(range(len(column))):
+            if column[i] != column[i-1]:
                 weight += data[i-1][1]
                 index = i
                 best_share.append(data[i-1][0])
@@ -52,8 +52,8 @@ def display_best_share(data: list[tuple], best_shares: list[str]) -> None:
 @time_exec
 def main(file, max_invest):
     data = get_data(file)
-    res = get_best_items(data, max_invest)
-    display_best_share(data, res)
+    best_share = get_best_items(data, max_invest)
+    display_best_share(data, best_share)
 
 
 if __name__ == "__main__":
