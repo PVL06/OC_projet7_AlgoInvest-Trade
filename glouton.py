@@ -12,10 +12,12 @@ def get_best_shares(data: list[tuple], max_invest: int) -> list[str]:
     print("-"*50)
     print(f"Total cost: {round(weight, 2)}, profit: {round(profit, 2)}\n")
 
+
 @time_exec
 def main(file: str, max_invest) -> None:
     data = get_data(file)
     get_best_shares(data, max_invest)
+
 
 if __name__ == "__main__":
     file, max_invest = user_selection()
