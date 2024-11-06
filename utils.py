@@ -7,12 +7,14 @@ def get_data(path_file: str) -> list[tuple]:
     with open(path_file, mode="r") as file:
         reader = csv.reader(file)
         next(reader)
-        return [
-            (line[0],
-            float(line[1]),
-            float(line[2].replace("%", ""))/100 * float(line[1]))
-            for line in reader if float(line[1]) > 0 and float(line[2].replace("%", "")) > 0
-        ]
+        data, shares = [], []
+        for line in reader:
+            cost = float(line[1])
+            perf = cost * float(line[2].replace("%", "")) / 100
+            if line[0] not in shares and cost > 0 and perf > 0:
+                data.append((line[0], cost, perf))
+                shares.append(line[0])
+        return data
 
 
 def user_selection():
