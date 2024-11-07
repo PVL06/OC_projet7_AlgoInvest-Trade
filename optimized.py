@@ -49,7 +49,7 @@ def main(file: str, max_invest: int) -> None:
     data = get_data(file)
     data = [(share[0], int(share[1]*FACTOR), share[2]) for share in data]
     best_shares = get_best_shares(data, max_invest*FACTOR)
-    display_best_shares(data, best_shares)
+    display_best_shares(best_shares)
 
 
 if __name__ == "__main__":
